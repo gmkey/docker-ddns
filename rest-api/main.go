@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+        "strings"
 
 	"github.com/gorilla/mux"
 )
@@ -77,7 +78,12 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	extractor := RequestDataExtractor{
 		Address: func(r *http.Request) string { return r.URL.Query().Get("addr") },
 		Secret:  func(r *http.Request) string { return r.URL.Query().Get("secret") },
-		Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
+	        TDomain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
+                if strings.Contains(TDomain, appConfig.Zone) == true  {
+			string Domain := string TDomain.replace(appConfig.Zone, "");
+		} else {
+			string Domain = string TDomain;
+		}
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
