@@ -38,3 +38,6 @@ api_test_recursion:
 
 deploy: image
 	docker run -it -d -p 8080:8080 -p 53:53 -p 53:53/udp --env-file envfile --name=dyndns davd/docker-ddns:latest
+
+ddns: 	image
+	docker run -it -d --restart unless-stopped  -p 8080:8080 -p 53:53 -p 53:53/udp --mount type=bind,source=/opt/DDNS/bind-data,target=/var/cache/bind --env-file envfile --name=dyndns davd/docker-ddns:latest

@@ -6,12 +6,12 @@ services:
     #build: .
     restart: always
     environment:
-      RECORD_TTL: 60
-      ZONE: example.org
-      SHARED_SECRET: changeme
+      RECORD_TTL: 3600
+      ZONE: dd.keij.org
+      SHARED_SECRET: sJ83mcNqjLZeb4eBxDnJ7biw4
     ports:
       - "53:53"
       - "53:53/udp"
       - "8080:8080"
-#    volumes:
-#       - ./bind-data:/var/cache/bind
+    volumes:
+       - ./bind-data:/var/cache/bind

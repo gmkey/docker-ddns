@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"strings"
-
 
 	"github.com/gorilla/mux"
 )
@@ -58,12 +56,6 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, domain := range response.Domains {
-		res1 := strings.Contains(domain, appConfig.Zone)
-		remstring := "." + appConfig.Zone
-		if res1 == true {
-			res2 := strings.Replace(domain, remstring, "", 1)
-			domain = res2
-		}
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
@@ -85,7 +77,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	extractor := RequestDataExtractor{
 		Address: func(r *http.Request) string { return r.URL.Query().Get("addr") },
 		Secret:  func(r *http.Request) string { return r.URL.Query().Get("secret") },
-	    Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
+		Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
@@ -93,14 +85,8 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	
+
 	for _, domain := range response.Domains {
-		res1 := strings.Contains(domain, appConfig.Zone)
-		remstring := "." + appConfig.Zone
-		if res1 == true {
-			res2 := strings.Replace(domain, remstring, "", 1)
-			domain = res2
-		}
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {

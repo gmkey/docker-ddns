@@ -1,3 +1,3 @@
-SHARED_SECRET=changeme
-ZONE=example.org
+SHARED_SECRET=sJ83mcNqjLZeb4eBxDnJ7biw4
+ZONE=dd.keij.org
 RECORD_TTL=3600
