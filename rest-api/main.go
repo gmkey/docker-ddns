@@ -105,7 +105,10 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, domain := range response.Domains {
-		domain = strings.Replace(domain, appConfig.SZone, "", -1)
+		if strings.Contains(domain, appConfig.SZone) {
+			domain = strings.Replace(domain, appConfig.SZone, "", -1)
+			response.Domain[domain] = domain
+		}
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
