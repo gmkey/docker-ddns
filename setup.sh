@@ -51,6 +51,7 @@ then
     "SharedSecret": "${SHARED_SECRET}",
     "Server": "localhost",
     "Zone": "${ZONE}.",
+	"SZone": ".${SZONE}",
     "Domain": "${ZONE}",
     "NsupdateBinary": "/usr/bin/nsupdate",
 	"RecordTTL": ${RECORD_TTL}
