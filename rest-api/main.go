@@ -65,11 +65,11 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, domain := range response.Domains {
-		if strings.Contains(domain, appConfig.SZone) {
-			shortDomain := strings.Replace(domain, appConfig.SZone, "", -1)
-			domain = shortDomain
-			response.Domains[i] = shortDomain
-		}
+		// if strings.Contains(domain, appConfig.SZone) {
+		// 	shortDomain := strings.Replace(domain, appConfig.SZone, "", -1)
+		// 	domain = shortDomain
+		// 	response.Domains[i] = shortDomain
+		// }
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
@@ -82,7 +82,7 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success = true
-	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s\t%s", response.AddrType, response.Domain, response.Address, appConfig.SZone)
+	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address)
 
 	w.Write([]byte(fmt.Sprintf("good %s, %s\n", response.Address, response.Domain)))
 }
@@ -109,11 +109,6 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, domain := range response.Domains {
-		if strings.Contains(domain, appConfig.SZone) {
-			shortDomain := strings.Replace(domain, appConfig.SZone, "", -1)
-			domain = shortDomain
-			response.Domains[i] = shortDomain
-		}
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
@@ -126,7 +121,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success = true
-	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s\t%s", response.AddrType, response.Domain, response.Address, appConfig.SZone)
+	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address)
 
 	json.NewEncoder(w).Encode(response)
 }
