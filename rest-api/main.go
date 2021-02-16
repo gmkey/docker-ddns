@@ -64,7 +64,7 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, domain := range response.Domains {
+	for _, domain := range response.Domains {
 		// if strings.Contains(domain, appConfig.SZone) {
 		// 	shortDomain := strings.Replace(domain, appConfig.SZone, "", -1)
 		// 	domain = shortDomain
@@ -108,7 +108,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, domain := range response.Domains {
+	for _, domain := range response.Domains {
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
