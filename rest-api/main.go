@@ -80,7 +80,7 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	response.Success = true
 	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address)
 
-	w.Write([]byte(fmt.Sprintf("good %s\n", response.Address, response.Domain)))
+	w.Write([]byte(fmt.Sprintf("good %s, %s\n", response.Address, response.Domain)))
 }
 
 // Update the dynamic ip address
