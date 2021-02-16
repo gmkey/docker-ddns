@@ -126,7 +126,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success = true
-	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address, appConfig.SZone)
+	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s\t%s", response.AddrType, response.Domain, response.Address, appConfig.SZone)
 
 	json.NewEncoder(w).Encode(response)
 }
