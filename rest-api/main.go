@@ -51,7 +51,7 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 				srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
 			}
 			return srcdomain
-		}
+		},
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
