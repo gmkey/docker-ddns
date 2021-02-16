@@ -5,15 +5,18 @@ import (
 	"os"
 )
 
+// Config configuration file
 type Config struct {
 	SharedSecret   string
 	Server         string
 	Zone           string
+	SZone          string
 	Domain         string
 	NsupdateBinary string
 	RecordTTL      int
 }
 
+// LoadConfig load the config from file
 func (conf *Config) LoadConfig(path string) {
 	file, err := os.Open(path)
 	if err != nil {

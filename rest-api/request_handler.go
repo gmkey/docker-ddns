@@ -2,22 +2,23 @@ package main
 
 import (
 	"bytes"
+	"dyndns/ipparser"
 	"errors"
 	"fmt"
 	"log"
 	"net"
 	"net/http"
 	"strings"
-
-	"dyndns/ipparser"
 )
 
+// RequestDataExtractor read the request
 type RequestDataExtractor struct {
 	Address func(request *http.Request) string
 	Secret  func(request *http.Request) string
 	Domain  func(request *http.Request) string
 }
 
+// WebserviceResponse reply to the request
 type WebserviceResponse struct {
 	Success  bool
 	Message  string
@@ -168,4 +169,3 @@ func isPrivateSubnet(ipAddress net.IP) bool {
 	}
 	return false
 }
-

@@ -1,3 +1,4 @@
 SHARED_SECRET=sJ83mcNqjLZeb4eBxDnJ7biw4
 ZONE=dd.keij.org
+SZONE=.dd.keij.org
 RECORD_TTL=3600

@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
@@ -31,6 +32,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
+// DynUpdate Update the Dynamic ip address
 func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	extractor := RequestDataExtractor{
 		Address: func(r *http.Request) string { return r.URL.Query().Get("myip") },
@@ -43,6 +45,13 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 			return sharedSecret
 		},
 		Domain: func(r *http.Request) string { return r.URL.Query().Get("hostname") },
+		// Domain: func(r *http.Request) string {
+		// 	srcdomain := r.URL.Query().Get("hostname")
+		// 	if strings.Contains(srcdomain, appConfig.SZone) {
+		// 		srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
+		// 	}
+		// 	return srcdomain
+		// }
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
@@ -56,6 +65,10 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, domain := range response.Domains {
+		if strings.Contains(domain, appConfig.SZone) {
+			domain = strings.Replace(domain, appConfig.SZone, "", -1)
+			return domain
+		}
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
@@ -70,14 +83,22 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	response.Success = true
 	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address)
 
-	w.Write([]byte(fmt.Sprintf("good %s\n", response.Address)))
+	w.Write([]byte(fmt.Sprintf("good %s\n", response.Address, response.Domain)))
 }
 
+// Update the dynamic ip address
 func Update(w http.ResponseWriter, r *http.Request) {
 	extractor := RequestDataExtractor{
 		Address: func(r *http.Request) string { return r.URL.Query().Get("addr") },
 		Secret:  func(r *http.Request) string { return r.URL.Query().Get("secret") },
 		Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
+		// Domain: func(r *http.Request) string {
+		// 	srcdomain = r.URL.Query().Get("hostname")
+		// 	if strings.Contains(srcdomain, appConfig.SZone) {
+		// 		srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
+		// 	}
+		// 	return srcdomain
+		// },
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
@@ -87,6 +108,10 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, domain := range response.Domains {
+		if strings.Contains(domain, appConfig.SZone) {
+			domain = strings.Replace(domain, appConfig.SZone, "", -1)
+			return domain
+		}
 		result := UpdateRecord(domain, response.Address, response.AddrType)
 
 		if result != "" {
@@ -104,6 +129,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
+// UpdateRecord confirm the update
 func UpdateRecord(domain string, ipaddr string, addrType string) string {
 	log.Println(fmt.Sprintf("%s record update request: %s -> %s", addrType, domain, ipaddr))
 
