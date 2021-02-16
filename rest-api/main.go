@@ -82,7 +82,7 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success = true
-	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address)
+	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s\t%s", response.AddrType, response.Domain, response.Address, appConfig.SZone)
 
 	w.Write([]byte(fmt.Sprintf("good %s, %s\n", response.Address, response.Domain)))
 }
@@ -94,7 +94,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		Secret:  func(r *http.Request) string { return r.URL.Query().Get("secret") },
 		// Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
 		Domain: func(r *http.Request) string {
-			srcdomain := r.URL.Query().Get("hostname")
+			srcdomain := r.URL.Query().Get("domain")
 			if strings.Contains(srcdomain, appConfig.SZone) {
 				srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
 			}
