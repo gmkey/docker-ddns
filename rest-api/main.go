@@ -44,14 +44,14 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 
 			return sharedSecret
 		},
-		Domain: func(r *http.Request) string { return r.URL.Query().Get("hostname") },
-		// Domain: func(r *http.Request) string {
-		// 	srcdomain := r.URL.Query().Get("hostname")
-		// 	if strings.Contains(srcdomain, appConfig.SZone) {
-		// 		srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
-		// 	}
-		// 	return srcdomain
-		// }
+		// Domain: func(r *http.Request) string { return r.URL.Query().Get("hostname") },
+		Domain: func(r *http.Request) string {
+			srcdomain := r.URL.Query().Get("hostname")
+			if strings.Contains(srcdomain, appConfig.SZone) {
+				srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
+			}
+			return srcdomain
+		}
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
@@ -92,14 +92,14 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	extractor := RequestDataExtractor{
 		Address: func(r *http.Request) string { return r.URL.Query().Get("addr") },
 		Secret:  func(r *http.Request) string { return r.URL.Query().Get("secret") },
-		Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
-		// Domain: func(r *http.Request) string {
-		// 	srcdomain = r.URL.Query().Get("hostname")
-		// 	if strings.Contains(srcdomain, appConfig.SZone) {
-		// 		srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
-		// 	}
-		// 	return srcdomain
-		// },
+		// Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
+		Domain: func(r *http.Request) string {
+			srcdomain := r.URL.Query().Get("hostname")
+			if strings.Contains(srcdomain, appConfig.SZone) {
+				srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
+			}
+			return srcdomain
+		},
 	}
 	response := BuildWebserviceResponseFromRequest(r, appConfig, extractor)
 
@@ -126,7 +126,7 @@ func Update(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.Success = true
-	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address)
+	response.Message = fmt.Sprintf("Updated %s record for %s to IP address %s", response.AddrType, response.Domain, response.Address, appConfig.SZone)
 
 	json.NewEncoder(w).Encode(response)
 }
