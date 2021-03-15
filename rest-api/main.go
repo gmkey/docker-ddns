@@ -47,9 +47,8 @@ func DynUpdate(w http.ResponseWriter, r *http.Request) {
 		// Domain: func(r *http.Request) string { return r.URL.Query().Get("hostname") },
 		Domain: func(r *http.Request) string {
 			srcdomain := r.URL.Query().Get("hostname")
-			if strings.Contains(srcdomain, appConfig.SZone) {
-				srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
-			}
+			cfgdomain := "." + appConfig.Domain
+			srcdomain = strings.Replace(srcdomain, cfgdomain, "", -1)
 			return srcdomain
 		},
 	}
@@ -95,9 +94,8 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		// Domain:  func(r *http.Request) string { return r.URL.Query().Get("domain") },
 		Domain: func(r *http.Request) string {
 			srcdomain := r.URL.Query().Get("domain")
-			if strings.Contains(srcdomain, appConfig.SZone) {
-				srcdomain = strings.Replace(srcdomain, appConfig.SZone, "", -1)
-			}
+			cfgdomain := "." + appConfig.Domain
+			srcdomain = strings.Replace(srcdomain, cfgdomain, "", -1)
 			return srcdomain
 		},
 	}

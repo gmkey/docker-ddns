@@ -10,7 +10,6 @@ type Config struct {
 	SharedSecret   string
 	Server         string
 	Zone           string
-	SZone          string
 	Domain         string
 	NsupdateBinary string
 	RecordTTL      int
